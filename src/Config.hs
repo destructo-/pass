@@ -1,5 +1,6 @@
 module Config (
     dataResource
+  , recordDevider
 ) where
 
 import Domain.Resource (Resource(..))
@@ -13,4 +14,4 @@ dataResource = Resource {
 
 
 recordDevider :: RecordDevider
-recordDevider = "|>"
+recordDevider = "||"

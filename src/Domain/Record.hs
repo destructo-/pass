@@ -22,15 +22,15 @@ data Record = Record {
     name :: Name
   , password :: Password
   , mark :: Maybe Mark }
-
+  deriving (Show, Eq)
 
 createRecord :: Name -> Password -> Maybe Mark -> Record
 createRecord name pass mark =
     Record {
         name = name
       , password = pass
-      , mark = mark
-    }
+      , mark = mark }
+
 
 
 readRecord :: String -> RecordDevider -> Maybe Record
@@ -39,20 +39,20 @@ readRecord str devider = _createRecord $ splitOn devider str
 
 writeRecord :: Record -> RecordDevider -> String
 writeRecord (Record name password (Just login)) devider =
-    name ++ devider ++ password ++ login
+    name ++ devider ++ password ++ devider ++ login
 writeRecord (Record name password Nothing) devider =
     name ++ devider ++ password
 
 
 _createRecord :: [String] -> Maybe Record
-_createRecord (name : password : [[]]) =
+_createRecord (name : password : []) =
     Just Record {
         name = name
       , password = password
       , mark = Nothing }
-_createRecord (name : password : login : xs) =
+_createRecord (name : password : mark : xs) =
     Just Record {
         name = name
       , password = password
-      , mark = Just login }
+      , mark = Just mark }
 _createRecord _ = Nothing

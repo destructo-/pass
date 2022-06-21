@@ -64,6 +64,7 @@ test-suite pass-test
   main-is: Main.hs
   other-modules:
       Domain.CommandsSpec
+      Domain.RecordSpec
       Domain.Utils.ListUtilsSpec
       Spec
       Paths_pass
