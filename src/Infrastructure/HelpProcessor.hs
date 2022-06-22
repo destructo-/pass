@@ -1,4 +1,4 @@
-module HelpProcessor (
+module Infrastructure.HelpProcessor (
     process
 ) where
 

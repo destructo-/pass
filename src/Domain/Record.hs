@@ -10,6 +10,7 @@ module Domain.Record (
 ) where
 
 import Data.List.Split (splitOn)
+import Control.Concurrent (yield)
 
 
 type RecordDevider = String
@@ -22,7 +23,13 @@ data Record = Record {
     name :: Name
   , password :: Password
   , mark :: Maybe Mark }
-  deriving (Show, Eq)
+  deriving (Show)
+
+
+instance Eq Record where
+  (==) x y = name x == name y
+  (/=) x y = not $ x == y
+
 
 createRecord :: Name -> Password -> Maybe Mark -> Record
 createRecord name pass mark =
@@ -32,9 +39,8 @@ createRecord name pass mark =
       , mark = mark }
 
 
-
 readRecord :: String -> RecordDevider -> Maybe Record
-readRecord str devider = _createRecord $ splitOn devider str
+readRecord str devider = _createRecordFrom $ splitOn devider str
 
 
 writeRecord :: Record -> RecordDevider -> String
@@ -44,15 +50,15 @@ writeRecord (Record name password Nothing) devider =
     name ++ devider ++ password
 
 
-_createRecord :: [String] -> Maybe Record
-_createRecord (name : password : []) =
+_createRecordFrom :: [String] -> Maybe Record
+_createRecordFrom (name : password : []) =
     Just Record {
         name = name
       , password = password
       , mark = Nothing }
-_createRecord (name : password : mark : xs) =
+_createRecordFrom (name : password : mark : xs) =
     Just Record {
         name = name
       , password = password
       , mark = Just mark }
-_createRecord _ = Nothing
+_createRecordFrom _ = Nothing

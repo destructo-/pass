@@ -1,1 +1,3 @@
 # pass
+
+dependencies ```xclip```

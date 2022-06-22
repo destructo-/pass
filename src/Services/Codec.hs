@@ -1,4 +1,7 @@
-module Services.Codec where
+module Services.Codec (
+    decode
+  , encode
+) where
 
 
 decode :: String -> String -> String

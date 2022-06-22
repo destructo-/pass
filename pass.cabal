@@ -25,13 +25,19 @@ source-repository head
 
 library
   exposed-modules:
-      AddProcessor
+      Application
       Config
       Domain.Commands
       Domain.Record
+      Domain.RecordsSeq
       Domain.Resource
       Domain.Utils.ListUtils
-      HelpProcessor
+      Infrastructure.AddProcessor
+      Infrastructure.DeleteProcessor
+      Infrastructure.FindProcessor
+      Infrastructure.HelpProcessor
+      Infrastructure.ListProcessor
+      Infrastructure.UpdateProcessor
       Services.Codec
       Services.DataRepository
       Services.Interaction
@@ -42,6 +48,7 @@ library
   build-depends:
       base >=4.7 && <5
     , directory >=1.3.6.2
+    , process >=1.6.13.2
     , split >=0.2.3.4
   default-language: Haskell2010
 
@@ -56,6 +63,7 @@ executable pass-exe
       base >=4.7 && <5
     , directory >=1.3.6.2
     , pass
+    , process >=1.6.13.2
     , split >=0.2.3.4
   default-language: Haskell2010
 
@@ -65,8 +73,10 @@ test-suite pass-test
   other-modules:
       Domain.CommandsSpec
       Domain.RecordSpec
+      Domain.RecordsSeqSpec
       Domain.Utils.ListUtilsSpec
       Spec
+      TestsUtils
       Paths_pass
   hs-source-dirs:
       test
@@ -77,5 +87,6 @@ test-suite pass-test
     , hspec >=2.0.0
     , hspec-expectations-lifted
     , pass
+    , process >=1.6.13.2
     , split >=0.2.3.4
   default-language: Haskell2010

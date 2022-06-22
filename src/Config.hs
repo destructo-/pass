@@ -1,10 +1,12 @@
 module Config (
     dataResource
   , recordDevider
+  , lineDevider
 ) where
 
 import Domain.Resource (Resource(..))
 import Domain.Record (RecordDevider)
+import Domain.RecordsSeq (LineDevider)
 
 
 dataResource :: Resource
@@ -15,3 +17,7 @@ dataResource = Resource {
 
 recordDevider :: RecordDevider
 recordDevider = "||"
+
+
+lineDevider :: LineDevider
+lineDevider = "\n"

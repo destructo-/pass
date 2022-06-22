@@ -5,10 +5,10 @@ module Domain.Utils.ListUtils (
 
 
 maybeHead :: [a] -> Maybe a
-maybeHead (x : xs)  = Just x
-maybeHead []        = Nothing
+maybeHead (x : xs) = Just x
+maybeHead []       = Nothing
 
 
 safeTail :: [a] -> [a]
-safeTail []         = []
-safeTail (x : xs)   = xs
+safeTail []       = []
+safeTail (x : xs) = xs
