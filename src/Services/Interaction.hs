@@ -6,6 +6,7 @@ module Services.Interaction (
   , allDone
   , failedToFind
   , printMarkAndPutPass
+  , printNamesList
   ) where
 
 import System.IO (
@@ -25,6 +26,8 @@ import System.Process ( callCommand )
 
 import Domain.Commands (Command(..))
 import Domain.Record (Record(..), Name, Password)
+import Control.Arrow (Arrow(first, second))
+import Data.List (intercalate)
 
 
 alreadyExist :: Name -> IO ()
@@ -39,6 +42,13 @@ allDone = putStrLn "all done!"
 failedToFind :: Name -> IO ()
 failedToFind name =
     putStrLn $ "failed to find record for name [" ++ name ++ "]"
+
+
+printNamesList :: [(Int, Name)] -> IO ()
+printNamesList names = do
+    let str = intercalate "\n" $ map (\r -> show (fst r) ++ ")" ++ show (snd r)) names
+    _ <- putStrLn "select record number or type [q] for quit"
+    putStrLn str
 
 
 printMarkAndPutPass :: Record -> IO ()

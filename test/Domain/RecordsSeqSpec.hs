@@ -16,7 +16,8 @@ import Domain.RecordsSeq (
   , readRecordsSeq
   , addIfNotExist
   , removeIfExist
-  , findRecord )
+  , findRecord
+  , getNamesList )
 
 
 spec :: Spec
@@ -90,3 +91,16 @@ spec = parallel $ do
             let recordsSeq = [record0, record1, record2]
             let findedRecord = "not_exist" `findRecord` recordsSeq
             findedRecord `shouldBe` Nothing
+
+    describe "when build names list from RecordsSeq" $ do
+        it "must create full names list with indexes starts from 1" $ do
+            let record0 = createRecord "first" "password 1" Nothing
+            let record1 = createRecord "second" "password" (Just "mark")
+            let record2 = createRecord "third" "password" Nothing
+            let recordsSeq = [record0, record1, record2]
+            let namesList = getNamesList recordsSeq
+            length namesList `shouldBe` 3
+            namesList !! 0 `shouldBe` (1, "first")
+            namesList !! 1 `shouldBe` (2, "second")
+            namesList !! 2 `shouldBe` (3, "third")
+

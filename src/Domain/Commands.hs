@@ -9,10 +9,10 @@ data Command = Add | Delete | List | Help | Find | Update
 
 
 _fromString :: String -> Command
-_fromString []       = Help
+_fromString []       = List
 _fromString "-add"   = Add
 _fromString "-del"   = Delete
-_fromString "-lst"  = List
+_fromString "-lst"   = List
 _fromString "-upd"   = Update
 _fromString "-help"  = Help
 _fromString (x : xs) = if x == '-' then Help else Find
@@ -20,7 +20,7 @@ _fromString (x : xs) = if x == '-' then Help else Find
 
 fromMaybeString :: Maybe String -> Command
 fromMaybeString (Just str)  = _fromString str
-fromMaybeString Nothing     = Help
+fromMaybeString Nothing     = List
 
 
 instance Show Command where

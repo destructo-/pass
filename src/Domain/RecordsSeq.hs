@@ -6,6 +6,7 @@ module Domain.RecordsSeq (
   , findRecord
   , readRecordsSeq
   , writeRecordsSeq
+  , getNamesList
 ) where
 
 import Data.List.Split (splitOn)
@@ -30,6 +31,10 @@ addIfNotExist record recordsSeq =
 
 removeIfExist :: Name -> RecordsSeq -> RecordsSeq
 removeIfExist recordName = filter (\r -> name r /= recordName)
+
+
+getNamesList :: RecordsSeq -> [(Int, Name)]
+getNamesList recsSeq = zip [1..] $ map name recsSeq
 
 
 findRecord :: Name -> RecordsSeq -> Maybe Record

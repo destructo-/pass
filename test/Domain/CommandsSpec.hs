@@ -20,7 +20,7 @@ spec = parallel $ do
     describe "when create command without key" $ do
         it "must return Help command" $do
             let argument = Nothing
-            fromMaybeString argument `shouldBe` Help
+            fromMaybeString argument `shouldBe` List
 
     describe "when create command from unsupported argument" $ do
         it "must return Help command" $ do
