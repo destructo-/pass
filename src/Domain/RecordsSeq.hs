@@ -18,7 +18,6 @@ import Data.List (intercalate)
 
 
 type LineDevider = String
-
 type RecordsSeq = [Record]
 
 
@@ -42,11 +41,11 @@ findRecord recordName records =
     ListUtils.maybeHead $ filter (\r -> name r == recordName) records
 
 
-readRecordsSeq :: String -> LineDevider -> RecordDevider -> RecordsSeq
+readRecordsSeq :: String -> LineDevider -> RecordDevider -> IO RecordsSeq
 readRecordsSeq str lineDevider recordDevider =
-    mapMaybe (`readRecord` recordDevider) (splitOn lineDevider str)
+    pure $ mapMaybe (`readRecord` recordDevider) (splitOn lineDevider str)
 
 
-writeRecordsSeq :: RecordsSeq -> LineDevider -> RecordDevider -> String
+writeRecordsSeq :: RecordsSeq -> LineDevider -> RecordDevider -> IO String
 writeRecordsSeq recordsSeq lineDevider recordDevider =
-    lineDevider `intercalate` map (`writeRecord` recordDevider) recordsSeq
+    pure $ lineDevider `intercalate` map (`writeRecord` recordDevider) recordsSeq

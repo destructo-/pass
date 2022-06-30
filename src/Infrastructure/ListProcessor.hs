@@ -20,7 +20,7 @@ process = do
     keypass         <- Interaction.requestKeypass
     storedData      <- Repository.findStoredData Config.dataResource
     let decodedData =  Codec.decode storedData keypass
-    let recordsSeq  =  readRecordsSeq decodedData Config.lineDevider Config.recordDevider
+    recordsSeq      <- readRecordsSeq decodedData Config.lineDevider Config.recordDevider
     let namesList   =  getNamesList recordsSeq
     maybeName       <- _requestListElement namesList
     let maybeRecord = maybeName >>= (`findRecord` recordsSeq)

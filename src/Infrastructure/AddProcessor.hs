@@ -20,9 +20,9 @@ process name maybeMark = do
     keypass                       <- Interaction.requestKeypass
     storedData                    <- Repository.findStoredData Config.dataResource
     let decodedData               =  Codec.decode storedData keypass
-    let recordsSeq                =  readRecordsSeq decodedData Config.lineDevider Config.recordDevider
+    recordsSeq                    <- readRecordsSeq decodedData Config.lineDevider Config.recordDevider
     (maybeNewRec, updatedRecsSeq) <- _addIfPossible name maybeMark recordsSeq
-    let updatedData               =  writeRecordsSeq updatedRecsSeq Config.lineDevider Config.recordDevider
+    updatedData                   <- writeRecordsSeq updatedRecsSeq Config.lineDevider Config.recordDevider
     let encodedData               =  Codec.encode updatedData keypass
     _                             <- Repository.updateStoredData Config.dataResource encodedData
     case maybeNewRec of
@@ -31,11 +31,11 @@ process name maybeMark = do
 
 
 _addIfPossible :: Name -> Maybe Mark -> RecordsSeq -> IO (Maybe Record, RecordsSeq)
-_addIfPossible name maybeMark recordsSeq =
-    case name `findRecord` recordsSeq of
-        Just re -> pure (Nothing, recordsSeq)
+_addIfPossible name maybeMark records =
+    case name `findRecord` records of
+        Just re -> pure (Nothing, records)
         Nothing -> do
             recordPassword        <- Interaction.requestPasswordFor name
             let newRecord         =  createRecord name recordPassword maybeMark
-            let updatedRecordsSeq =  newRecord `addIfNotExist` recordsSeq
+            let updatedRecordsSeq =  newRecord `addIfNotExist` records
             pure (Just newRecord, updatedRecordsSeq)

@@ -28,8 +28,8 @@ spec = parallel $ do
             let record1 = createRecord "second" "password" (Just "mark")
             let record2 = createRecord "third" "password" Nothing
             let recordsSeq = [record0, record1, record2]
-            let writtenRecords = writeRecordsSeq recordsSeq Config.lineDevider Config.recordDevider
-            let readedRecords = readRecordsSeq writtenRecords Config.lineDevider Config.recordDevider
+            writtenRecords <- writeRecordsSeq recordsSeq Config.lineDevider Config.recordDevider
+            readedRecords <- readRecordsSeq writtenRecords Config.lineDevider Config.recordDevider
             length readedRecords `shouldBe` 3
             Just (readedRecords !! 0) `TestsUtils.checkRecord` record0
             Just (readedRecords !! 1) `TestsUtils.checkRecord` record1

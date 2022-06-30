@@ -20,9 +20,9 @@ process name maybeMark = do
     keypass                       <- Interaction.requestKeypass
     storedData                    <- Repository.findStoredData Config.dataResource
     let decodedData               =  Codec.decode storedData keypass
-    let recordsSeq                =  readRecordsSeq decodedData Config.lineDevider Config.recordDevider
+    recordsSeq                    <-  readRecordsSeq decodedData Config.lineDevider Config.recordDevider
     (maybeNewRec, updatedRecsSeq) <- _findAndUpdate name maybeMark recordsSeq
-    let updatedData               =  writeRecordsSeq updatedRecsSeq Config.lineDevider Config.recordDevider
+    updatedData                   <-  writeRecordsSeq updatedRecsSeq Config.lineDevider Config.recordDevider
     let encodedData               =  Codec.encode updatedData keypass
     _                             <- Repository.updateStoredData Config.dataResource encodedData
     case maybeNewRec of

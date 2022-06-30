@@ -14,9 +14,9 @@ process name = do
     keypass               <- Interaction.requestKeypass
     storedData            <- Repository.findStoredData Config.dataResource
     let decodedData       =  Codec.decode storedData keypass
-    let recordsSeq        =  readRecordsSeq decodedData Config.lineDevider Config.recordDevider
+    recordsSeq            <- readRecordsSeq decodedData Config.lineDevider Config.recordDevider
     let updatedRecordsSeq =  name `removeIfExist` recordsSeq
-    let updatedData       =  writeRecordsSeq updatedRecordsSeq Config.lineDevider Config.recordDevider
+    updatedData           <- writeRecordsSeq updatedRecordsSeq Config.lineDevider Config.recordDevider
     let encodedData       =  Codec.encode updatedData keypass
     _                     <- Repository.updateStoredData Config.dataResource encodedData
     if length recordsSeq == length updatedRecordsSeq

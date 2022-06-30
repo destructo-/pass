@@ -15,7 +15,7 @@ process name = do
     keypass            <- Interaction.requestKeypass
     storedData         <- Repository.findStoredData Config.dataResource
     let decodedData    =  Codec.decode storedData keypass
-    let recordsSeq     =  readRecordsSeq decodedData Config.lineDevider Config.recordDevider
+    recordsSeq     <- readRecordsSeq decodedData Config.lineDevider Config.recordDevider
     let searchedRecord =  name `findRecord` recordsSeq
     case searchedRecord of
         Just record -> Interaction.printMarkAndPutPass record
