@@ -15,6 +15,7 @@ import Data.Maybe (mapMaybe)
 import qualified Domain.Utils.ListUtils as ListUtils
 import Domain.Record (Record(..), Name, RecordDevider, readRecord, writeRecord)
 import Data.List (intercalate)
+import qualified Domain.Garbage as Garbage
 
 
 type LineDevider = String
@@ -47,5 +48,16 @@ readRecordsSeq str lineDevider recordDevider =
 
 
 writeRecordsSeq :: RecordsSeq -> LineDevider -> RecordDevider -> IO String
-writeRecordsSeq recordsSeq lineDevider recordDevider =
-    pure $ lineDevider `intercalate` map (`writeRecord` recordDevider) recordsSeq
+writeRecordsSeq recordsSeq lineDevider recordDevider = do
+    let strings        =  map (`writeRecord` recordDevider) recordsSeq
+    let minLength      =  minimum `_recordLength` strings
+    let maxLength      =  maximum `_recordLength` strings
+    garbageCount       <- Garbage.garbageStringsAvailableCount $ length strings
+    garbageStrings     <- Garbage.generateGarbageStrings garbageCount (minLength, maxLength)
+    let recordsStrings =  map (`writeRecord` recordDevider) recordsSeq
+    resultStrings      <- Garbage.randomMerge recordsStrings garbageStrings
+    pure $ lineDevider `intercalate` resultStrings
+
+
+_recordLength :: ([Int] -> Int) -> [String] -> Int
+_recordLength f strs = f $ map length strs

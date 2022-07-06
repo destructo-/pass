@@ -47,13 +47,13 @@ failedToFind name =
 printNamesList :: [(Int, Name)] -> IO ()
 printNamesList names = do
     let str = intercalate "\n" $ map (\r -> show (fst r) ++ ")" ++ show (snd r)) names
-    _ <- putStrLn "select record number or type [q] for quit"
-    putStrLn str
+    _ <- putStrLn str
+    putStrLn "select record number or type [q] for quit "
 
 
 printMarkAndPutPass :: Record -> IO ()
 printMarkAndPutPass (Record _ pass (Just mark)) = do
-    _ <- putStrLn mark
+    _ <- putStrLn $ "record mark: " ++ mark
     _setClipboard pass
 printMarkAndPutPass (Record _ pass Nothing) =
     _setClipboard pass
