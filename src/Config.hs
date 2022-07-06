@@ -6,7 +6,7 @@ module Config (
 
 import Domain.Resource (Resource(..))
 import Domain.Record (RecordDevider)
-import Domain.RecordsSeq (LineDevider)
+import Services.RecordsSeq (LineDevider)
 
 
 dataResource :: Resource

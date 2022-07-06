@@ -6,13 +6,8 @@ import qualified Domain.Utils.ListUtils  as ListUtils
 import qualified Services.DataRepository as Repository
 import qualified Services.Interaction    as Interaction
 import qualified Services.Codec          as Codec
-import           Domain.Record (Record, Name, Mark, readRecord, createRecord, writeRecord)
-import Domain.RecordsSeq (
-    RecordsSeq
-  , readRecordsSeq
-  , findRecord
-  , getNamesList )
-import Data.Maybe (mapMaybe)
+import qualified Domain.Record           as Record
+import qualified Services.RecordsSeq     as RecordsSeq
 
 
 process :: IO ()
@@ -20,15 +15,15 @@ process = do
     keypass         <- Interaction.requestKeypass
     storedData      <- Repository.findStoredData Config.dataResource
     let decodedData =  Codec.decode storedData keypass
-    recordsSeq      <- readRecordsSeq decodedData Config.lineDevider Config.recordDevider
-    let namesList   =  getNamesList recordsSeq
+    recordsSeq      <- RecordsSeq.readRecordsSeq decodedData Config.lineDevider Config.recordDevider
+    let namesList   =  RecordsSeq.getNamesList recordsSeq
     maybeName       <- _requestListElement namesList
-    let maybeRecord = maybeName >>= (`findRecord` recordsSeq)
+    let maybeRecord = maybeName >>= (`RecordsSeq.findRecord` recordsSeq)
     maybe
       Interaction.allDone Interaction.printMarkAndPutPass maybeRecord
 
 
-_requestListElement :: [(Int, Name)] -> IO (Maybe Name)
+_requestListElement :: [(Int, Record.Name)] -> IO (Maybe Record.Name)
 _requestListElement namesList = do
     _ <- Interaction.printNamesList namesList
     input <- getLine
@@ -39,7 +34,7 @@ _requestListElement namesList = do
             Nothing -> _requestListElement namesList
 
 
-_maybeNamesElement :: String -> [(Int, Name)] -> Maybe Name
+_maybeNamesElement :: String -> [(Int, Record.Name)] -> Maybe Record.Name
 _maybeNamesElement input namesList =
     let filteredList = filter (\r -> show (fst r) == input) namesList
         names = map snd filteredList

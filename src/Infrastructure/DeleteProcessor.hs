@@ -5,18 +5,18 @@ import qualified Config
 import qualified Services.DataRepository as Repository
 import qualified Services.Interaction    as Interaction
 import qualified Services.Codec          as Codec
-import           Domain.Record (Name, Mark, readRecord, createRecord, writeRecord)
-import           Domain.RecordsSeq (readRecordsSeq, writeRecordsSeq, addIfNotExist, removeIfExist)
+import qualified Domain.Record           as Record
+import qualified Services.RecordsSeq     as RecordsSeq
 
 
-process :: Name -> IO ()
+process :: Record.Name -> IO ()
 process name = do
     keypass               <- Interaction.requestKeypass
     storedData            <- Repository.findStoredData Config.dataResource
     let decodedData       =  Codec.decode storedData keypass
-    recordsSeq            <- readRecordsSeq decodedData Config.lineDevider Config.recordDevider
-    let updatedRecordsSeq =  name `removeIfExist` recordsSeq
-    updatedData           <- writeRecordsSeq updatedRecordsSeq Config.lineDevider Config.recordDevider
+    recordsSeq            <- RecordsSeq.readRecordsSeq decodedData Config.lineDevider Config.recordDevider
+    let updatedRecordsSeq =  name `RecordsSeq.removeIfExist` recordsSeq
+    updatedData           <- RecordsSeq.writeRecordsSeq updatedRecordsSeq Config.lineDevider Config.recordDevider
     let encodedData       =  Codec.encode updatedData keypass
     _                     <- Repository.updateStoredData Config.dataResource encodedData
     if length recordsSeq == length updatedRecordsSeq

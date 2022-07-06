@@ -30,7 +30,6 @@ library
       Domain.Commands
       Domain.Garbage
       Domain.Record
-      Domain.RecordsSeq
       Domain.Resource
       Domain.Utils.ListUtils
       Infrastructure.AddProcessor
@@ -42,6 +41,7 @@ library
       Services.Codec
       Services.DataRepository
       Services.Interaction
+      Services.RecordsSeq
   other-modules:
       Paths_pass
   hs-source-dirs:
@@ -77,9 +77,9 @@ test-suite pass-test
       Domain.CommandsSpec
       Domain.GarbageSpec
       Domain.RecordSpec
-      Domain.RecordsSeqSpec
       Domain.ResourceSpec
       Domain.Utils.ListUtilsSpec
+      Services.RecordsSeqSpec
       Spec
       TestsUtils
       Paths_pass
